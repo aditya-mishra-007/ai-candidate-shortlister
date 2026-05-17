@@ -24,7 +24,7 @@ Built with a clean React frontend, Express backend, MongoDB database, and AI cha
 <img src="https://github.com/user-attachments/assets/46c21a36-804f-4a22-81a7-9961f25c655b" width="70%" />
 
 ### AI Chatbot / Shortlisting Result
-<img src="https://github.com/user-attachments/assets/47f217f5-13d9-4c3e-a1c1-d67580ece8e6" width="40%" />
+<img src="https://github.com/user-attachments/assets/47f217f5-13d9-4c3e-a1c1-d67580ece8e6" width="35%" />
 
 ---
 
