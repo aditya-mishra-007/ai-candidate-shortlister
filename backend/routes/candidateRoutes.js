@@ -31,4 +31,15 @@ router.get('/', async (req, res) => {
     }
 });
 
+// 5. Delete Candidate Profile (DELETE /api/candidates/:id)
+router.delete('/:id', async (req, res) => {
+    try {
+        await Candidate.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: 'Candidate profile removed successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 module.exports = router;
