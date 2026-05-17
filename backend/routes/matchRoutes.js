@@ -110,4 +110,76 @@ router.post('/ai/shortlist', async (req, res) => {
     }
 });
 
+// 6. AI Chatbot Assistant & Interview Question Generator (POST /api/ai/chat)
+router.post('/ai/chat', async (req, res) => {
+    try {
+        const { message } = req.body;
+        const candidates = await Candidate.find();
+
+        // Pass database summaries into conversational context sequence
+        const candidateContext = candidates.map((c, i) => 
+            `${i + 1}. Name: ${c.name} | Skills: [${c.skills.join(', ')}] | Exp: ${c.experience} Yrs`
+        ).join('\n');
+
+        const fetchModule = globalThis.fetch || require('node-fetch');
+        
+        // Exact same unbreakable model fallback matrix that saved our shortlisting route!
+        const freeModels = [
+            "meta-llama/llama-3.2-3b-instruct:free",
+            "openrouter/free"
+        ];
+
+        let aiReply = "";
+        let successfulModel = "";
+
+        for (const model of freeModels) {
+            try {
+                console.log(`💬 Chatbot querying engine: ${model}...`);
+                const response = await fetchModule("https://openrouter.ai/api/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+                        "Content-Type": "application/json",
+                        "HTTP-Referer": "http://localhost:5000",
+                        "X-Title": "FSD Chat Assistant"
+                    },
+                    body: JSON.stringify({
+                        model: model, 
+                        messages: [
+                            { 
+                                role: "system", 
+                                content: "You are an advanced AI HR Specialist. Use the candidate database context to answer recruiters' questions, compare talent arrays, or generate custom interview questions." 
+                            },
+                            { 
+                                role: "user", 
+                                content: `Current Database Status:\n${candidateContext}\n\nUser Question: ${message}` 
+                            }
+                        ]
+                    })
+                });
+
+                const data = await response.json();
+                if (data.choices && data.choices[0]) {
+                    aiReply = data.choices[0].message?.content || data.choices[0].text;
+                    successfulModel = model;
+                    break; // Broke through successfully! Exit the fallback loop.
+                } else {
+                    console.warn(`⚠️ Chatbot model ${model} was busy. Retrying next tier...`);
+                }
+            } catch (err) {
+                console.warn(`❌ Network issue with chat model ${model}:`, err.message);
+            }
+        }
+
+        if (aiReply) {
+            console.log(`✅ Chat success using model: ${successfulModel}`);
+            res.status(200).json({ reply: aiReply });
+        } else {
+            res.status(502).json({ error: "All upstream chat endpoints are currently congested. Please retry in a few seconds." });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
