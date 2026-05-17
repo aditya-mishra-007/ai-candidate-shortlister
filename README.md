@@ -24,7 +24,7 @@ Built with a clean React frontend, Express backend, MongoDB database, and AI cha
 <img src="https://github.com/user-attachments/assets/46c21a36-804f-4a22-81a7-9961f25c655b" width="70%" />
 
 ### AI Chatbot / Shortlisting Result
-<img src="https://github.com/user-attachments/assets/47f217f5-13d9-4c3e-a1c1-d67580ece8e6" width="70%" />
+<img src="https://github.com/user-attachments/assets/47f217f5-13d9-4c3e-a1c1-d67580ece8e6" width="40%" />
 
 ---
 
@@ -108,75 +108,106 @@ AI-CANDIDATE-SHORTLISTER/
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/aditya-mishra-007/ai-candidate-shortlister.git](https://github.com/aditya-mishra-007/ai-candidate-shortlister.git)
+git clone https://github.com/aditya-mishra-007/ai-candidate-shortlister.git
 cd ai-candidate-shortlister
+```
 
-2. Install Dependencies
-Backend
-Bash
+---
+
+### 2. Install Dependencies
+
+#### Backend
+
+```bash
 cd backend
 npm install
-Frontend
-Bash
+```
+
+#### Frontend
+
+```bash
 cd ../frontend
 npm install
-3. Setup Environment Variables
-Create a .env file in the backend folder:
+```
 
-Code snippet
+---
+
+### 3. Setup Environment Variables
+
+Create a `.env` file in the **backend** folder:
+
+```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 OPENROUTER_API_KEY=your_openrouter_api_key
-4. Run the Application
-Start Backend
-Bash
+```
+
+---
+
+### 4. Run the Application
+
+#### Start Backend
+
+```bash
 cd backend
 npm start
-Start Frontend
-Bash
+```
+
+#### Start Frontend
+
+```bash
 cd frontend
 npm run dev
-🔌 API Routes
-Candidate Routes
-POST /api/candidates
+```
 
-GET /api/candidates
+---
 
-Matching Routes
-POST /api/match
+## 🔌 API Routes
 
-🌐 Deployment
-Frontend & Backend deployed on Render
+### Candidate Routes
 
-Database hosted on MongoDB Atlas
+* POST /api/candidates
+* GET /api/candidates
 
-AI chatbot powered by OpenRouter API
+### Matching Routes
 
-🎯 Purpose of the Project
+* POST /api/match
+
+---
+
+## 🌐 Deployment
+
+* Frontend & Backend deployed on Render
+* Database hosted on MongoDB Atlas
+* AI chatbot powered by OpenRouter API
+
+---
+
+## 🎯 Purpose of the Project
+
 This project was built to:
 
-Practice full-stack MERN development
+* Practice full-stack MERN development
+* Integrate AI features into a real-world web application
+* Build a recruitment-focused candidate management system
+* Learn backend API handling and deployment
+* Create a portfolio-ready AI-based project
 
-Integrate AI features into a real-world web application
+---
 
-Build a recruitment-focused candidate management system
+## 🚀 Future Improvements
 
-Learn backend API handling and deployment
+* 📄 Resume upload feature
+* ⭐ AI-based candidate scoring
+* 🔍 Candidate search and filtering
+* 🔐 Recruiter/Admin login
+* 📧 Email notification system
 
-Create a portfolio-ready AI-based project
+---
 
-🚀 Future Improvements
-📄 Resume upload feature
+## 👨‍💻 Author
 
-⭐ AI-based candidate scoring
+**Aditya Mishra**
+GitHub: [https://github.com/aditya-mishra-007](https://github.com/aditya-mishra-007)
 
-🔍 Candidate search and filtering
-
-🔐 Recruiter/Admin login
-
-📧 Email notification system
-
-👨‍💻 Author
-Aditya Mishra
-
-GitHub: https://github.com/aditya-mishra-007
+---
