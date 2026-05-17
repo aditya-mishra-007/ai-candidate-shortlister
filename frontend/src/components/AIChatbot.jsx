@@ -29,10 +29,24 @@ export default function AIChatbot() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMessage })
       });
+      
       const data = await res.json();
-      setMessages(prev => [...prev, { role: 'assistant', text: data.reply }]);
+      
+      if (res.ok && data.reply) {
+        setMessages(prev => [...prev, { role: 'assistant', text: data.reply }]);
+      } else {
+        // Render server failure codes cleanly inside a chat bubble
+        setMessages(prev => [...prev, { 
+          role: 'assistant', 
+          text: `⚠️ Engine Error: ${data.error || "The server returned an unreadable response layout."}` 
+        }]);
+      }
     } catch (err) {
       console.error(err);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        text: "❌ Connection Error: Unable to hit your live backend API endpoint service." 
+      }]);
     } finally {
       setLoading(false);
     }
@@ -50,12 +64,12 @@ export default function AIChatbot() {
         </button>
       )}
 
-      {/* Chat Windows Container Panel */}
+      {/* Chat Window Box Layout Container */}
       {isOpen && (
-        <div className="w-[350px] h-[480px] bg-gray-950 border border-gray-800 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden backdrop-blur-xl relative">
+        <div className="w-[360px] h-[500px] bg-gray-950 border border-gray-800 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.7)] flex flex-col overflow-hidden backdrop-blur-xl relative">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-500 to-indigo-500"></div>
           
-          {/* Header */}
+          {/* Header Banner */}
           <div className="p-4 bg-gray-900/60 border-b border-gray-800 flex justify-between items-center shrink-0">
             <div className="flex items-center gap-2">
               <Bot size={18} className="text-purple-400" />
@@ -66,14 +80,14 @@ export default function AIChatbot() {
             </button>
           </div>
 
-          {/* Message Stream */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 scrollbar-none text-xs">
+          {/* Chat Bubble Message Stream Layout */}
+          <div className="flex-1 p-4 overflow-y-auto space-y-3 text-xs leading-relaxed">
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] p-3 rounded-xl font-medium leading-relaxed whitespace-pre-wrap shadow-sm ${
+                <div className={`max-w-[85%] p-3 rounded-xl font-medium whitespace-pre-wrap shadow-sm border ${
                   msg.role === 'user' 
-                    ? 'bg-purple-600 text-white rounded-tr-none' 
-                    : 'bg-gray-900 text-gray-300 border border-gray-800 rounded-tl-none'
+                    ? 'bg-purple-600 text-white border-purple-500 rounded-tr-none shadow-purple-950/20' 
+                    : 'bg-gray-900 text-gray-300 border-gray-800 rounded-tl-none'
                 }`}>
                   {msg.text}
                 </div>
@@ -81,21 +95,21 @@ export default function AIChatbot() {
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-gray-900 border border-gray-800 text-purple-400 p-3 rounded-xl rounded-tl-none font-bold font-mono animate-pulse">
-                  AI is processing...
+                <div className="bg-gray-900 border border-gray-800 text-purple-400 px-3 py-2.5 rounded-xl rounded-tl-none font-bold animate-pulse font-mono tracking-wider">
+                  AI is typing...
                 </div>
               </div>
             )}
             <div ref={chatEndRef} />
           </div>
 
-          {/* Form Input Control */}
+          {/* Prompt Entry Form Group */}
           <form onSubmit={handleSendMessage} className="p-3 bg-gray-900/40 border-t border-gray-800 flex gap-2 items-center shrink-0">
             <input 
               type="text" 
               value={input} 
               onChange={e => setInput(e.target.value)} 
-              placeholder="Ask for interview questions..." 
+              placeholder="Ask about ML candidates or questions..." 
               className="flex-1 p-2.5 rounded-xl bg-gray-950 border border-gray-800 text-xs text-white focus:outline-none focus:border-purple-500 transition-all font-medium"
             />
             <button type="submit" className="bg-purple-600 hover:bg-purple-500 text-white p-2.5 rounded-xl transition-all shadow-md">
